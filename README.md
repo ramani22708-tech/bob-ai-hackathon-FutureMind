@@ -17,10 +17,10 @@ An AI-powered grid optimisation and renewable energy performance platform built 
 
 | Name | Role |
 |---|---|
-| Shruti Ramani | Team Lead — Full Stack Development, AI Integration |
-| Team Member 2 | UI/UX Design, Frontend |
-| Team Member 3 | Data Science, Forecasting Logic |
-| Team Member 4 | Documentation, Testing, Presentation |
+| Team Lead     | Shruti Ramani    |
+| Team Member 2 | Drashti Sheta    |
+| Team Member 3 | Dharati Narodiya |
+| Team Member 4 | Palak Anadkat    |
 
 ---
 
