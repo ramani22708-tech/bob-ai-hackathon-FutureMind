@@ -169,8 +169,8 @@ export default function Overview({ onNavigate }) {
               <div className="chart-title">Active Alerts</div>
               <div className="chart-sub">{unacknowledgedAlerts.length} unacknowledged alerts</div>
             </div>
-            <button className="btn btn-ghost btn-sm" onClick={() => onNavigate('overview')}>
-              View All
+            <button className="btn btn-ghost btn-sm" onClick={() => onNavigate('insights')}>
+              View All →
             </button>
           </div>
           {unacknowledgedAlerts.length === 0 ? (
