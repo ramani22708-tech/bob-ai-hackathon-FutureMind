@@ -35,16 +35,48 @@ export default function Header({ activePage, onNavigate }) {
   return (
     <header className="header">
       <div className="header-left">
-        {/* IBM Official Logo */}
+        {/* IBM BoB — header badge */}
         <div style={{
           display: 'flex',
           alignItems: 'center',
-          gap: '14px',
-          paddingRight: '16px',
-          marginRight: '16px',
+          gap: '8px',
+          paddingRight: '18px',
+          marginRight: '18px',
           borderRight: '1px solid var(--border)',
+          flexShrink: 0,
         }}>
-          <IBMLogo />
+          {/* IBM blue pill */}
+          <div style={{
+            background: '#1F70C1',
+            borderRadius: '6px',
+            padding: '4px 10px',
+          }}>
+            <span style={{
+              color: '#ffffff',
+              fontWeight: 900,
+              fontSize: '18px',
+              fontFamily: '"Segoe UI", Arial, sans-serif',
+              letterSpacing: '3px',
+              lineHeight: 1,
+              display: 'block',
+            }}>IBM</span>
+          </div>
+          {/* BoB text */}
+          <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.2 }}>
+            <span style={{
+              color: '#ffffff',
+              fontWeight: 800,
+              fontSize: '15px',
+              fontFamily: '"Segoe UI", Arial, sans-serif',
+              letterSpacing: '1px',
+            }}>BoB</span>
+            <span style={{
+              color: 'var(--text-muted)',
+              fontSize: '9px',
+              letterSpacing: '0.5px',
+              fontWeight: 500,
+            }}>AI INNOVATION</span>
+          </div>
         </div>
 
         <div>
@@ -123,57 +155,3 @@ export default function Header({ activePage, onNavigate }) {
   );
 }
 
-// ─── IBM 8-Bar Stripe Wordmark ───────────────────────────────────────────────
-// Faithful recreation of IBM's iconic 8-horizontal-stripe logo in IBM blue.
-function IBMLogo() {
-  const c = '#1F70C1'; // IBM blue
-  // Each letter uses 8 horizontal stripes (bars) with equal gaps
-  // Stripe height = 3px, gap = 2px → unit = 5px, total height = 8×3 + 7×2 = 38px
-  const bh = 3;   // bar height
-  const gap = 2;  // gap between bars
-  const u = bh + gap; // 5px per row
-
-  // rows 0-7 y-positions
-  const y = Array.from({ length: 8 }, (_, i) => i * u);
-
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 80 38"
-      width="80"
-      height="38"
-      aria-label="IBM"
-      style={{ display: 'block', flexShrink: 0 }}
-    >
-      {/* ── I ── x: 0–13 */}
-      {y.map((yi, i) => <rect key={`i${i}`} x={0} y={yi} width={13} height={bh} fill={c} />)}
-
-      {/* ── B ── x: 18–43  */}
-      {/* 8 left bars */}
-      {y.map((yi, i) => <rect key={`bl${i}`} x={18} y={yi} width={13} height={bh} fill={c} />)}
-      {/* top bump: rows 0-2, right bar + connector */}
-      <rect x={31} y={y[0]} width={12} height={bh} fill={c} />
-      <rect x={31} y={y[1]} width={12} height={bh} fill={c} />
-      <rect x={42} y={y[0]} width={bh} height={u + bh} fill={c} />
-      {/* middle bump: rows 3-5 */}
-      <rect x={31} y={y[3]} width={13} height={bh} fill={c} />
-      <rect x={31} y={y[4]} width={13} height={bh} fill={c} />
-      <rect x={43} y={y[3]} width={bh} height={u + bh} fill={c} />
-      {/* bottom bump: rows 6-7 */}
-      <rect x={31} y={y[6]} width={12} height={bh} fill={c} />
-      <rect x={31} y={y[7]} width={12} height={bh} fill={c} />
-      <rect x={42} y={y[6]} width={bh} height={u + bh} fill={c} />
-
-      {/* ── M ── x: 48–80 */}
-      {/* left column */}
-      {y.map((yi, i) => <rect key={`ml${i}`} x={48} y={yi} width={13} height={bh} fill={c} />)}
-      {/* right column */}
-      {y.map((yi, i) => <rect key={`mr${i}`} x={67} y={yi} width={13} height={bh} fill={c} />)}
-      {/* center V-shape (rows 0–3 descend, rows 4–7 ascend) */}
-      <rect x={59} y={y[0]} width={10} height={bh} fill={c} />
-      <rect x={60} y={y[1]} width={8}  height={bh} fill={c} />
-      <rect x={61} y={y[2]} width={6}  height={bh} fill={c} />
-      <rect x={62} y={y[3]} width={4}  height={bh} fill={c} />
-    </svg>
-  );
-}

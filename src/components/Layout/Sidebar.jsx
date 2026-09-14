@@ -36,6 +36,57 @@ export default function Sidebar({ activePage, onNavigate }) {
     <aside className="sidebar">
       {/* Logo */}
       <div className="sidebar-logo">
+
+        {/* IBM BoB Badge — above GridWise AI */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          marginBottom: '10px',
+          paddingBottom: '10px',
+          borderBottom: '1px solid var(--border)',
+        }}>
+          {/* IBM wordmark */}
+          <div style={{
+            background: '#1F70C1',
+            borderRadius: '5px',
+            padding: '3px 8px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+            <span style={{
+              color: '#ffffff',
+              fontWeight: 900,
+              fontSize: '16px',
+              fontFamily: '"Segoe UI", Arial, sans-serif',
+              letterSpacing: '2px',
+              lineHeight: 1,
+            }}>IBM</span>
+          </div>
+          {/* BoB wordmark */}
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            lineHeight: 1.1,
+          }}>
+            <span style={{
+              color: '#ffffff',
+              fontWeight: 800,
+              fontSize: '13px',
+              fontFamily: '"Segoe UI", Arial, sans-serif',
+              letterSpacing: '0.5px',
+            }}>BoB</span>
+            <span style={{
+              color: 'var(--text-muted)',
+              fontWeight: 400,
+              fontSize: '9px',
+              letterSpacing: '0.3px',
+            }}>AI Innovation</span>
+          </div>
+        </div>
+
+        {/* GridWise AI logo */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
           <span style={{ fontSize: '22px' }}>⚡</span>
           <span className="sidebar-logo-title">GridWise AI</span>
