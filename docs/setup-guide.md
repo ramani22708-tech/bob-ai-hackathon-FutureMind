@@ -1,79 +1,151 @@
-# Setup Guide
+# ⚙️ Setup Guide — GridWise AI
 
-> **This file is read by the automated evaluation pipeline. Be precise and complete.**
+**IBM BoB AI Innovation Hackathon 2026**
+
+---
 
 ## Prerequisites
 
-Before you begin, ensure you have the following installed:
-
-- [ ] [e.g., Python 3.11+]
-- [ ] [e.g., Node.js 18+]
-- [ ] [e.g., Docker Desktop]
-- [ ] [e.g., An IBM Cloud account with watsonx.ai access]
-
-## Environment Variables
-
-Copy `.env.example` to `.env` and fill in the values:
-
-```bash
-cp .env.example .env
-```
-
-| Variable | Description | Required |
+| Requirement | Version | Check |
 |---|---|---|
-| `WATSONX_API_KEY` | Your IBM watsonx.ai API key | Yes |
-| `WATSONX_PROJECT_ID` | Your watsonx.ai project ID | Yes |
-| `DATABASE_URL` | PostgreSQL connection string | Yes |
-| `SLACK_WEBHOOK_URL` | Slack webhook for alerts | No |
+| Node.js | v18 or later | `node --version` |
+| npm | v9 or later | `npm --version` |
+| Git | Any recent version | `git --version` |
+| Browser | Chrome, Firefox, or Edge (latest) | — |
+
+> ✅ **No API keys, environment variables, or paid services required.**
+> The entire application runs locally in your browser.
+
+---
 
 ## Installation
 
-```bash
-# 1. Clone the repository
-git clone https://github.com/[your-org]/[your-repo].git
-cd [your-repo]
-
-# 2. Install backend dependencies
-[your command — e.g.: pip install -r requirements.txt]
-
-# 3. Install frontend dependencies (if applicable)
-[your command — e.g.: cd frontend && npm install]
-
-# 4. Set up the database (if applicable)
-[your command — e.g.: python manage.py migrate]
-```
-
-## Running the Application
+### Step 1 — Clone the repository
 
 ```bash
-# Start the backend
-[your command — e.g.: uvicorn app.main:app --reload]
-
-# Start the frontend (in a separate terminal, if applicable)
-[your command — e.g.: cd frontend && npm run dev]
+git clone https://github.com/ramani22708-tech/bob-ai-hackathon-FutureMind.git
+cd bob-ai-hackathon-FutureMind
 ```
 
-The application will be available at: `http://localhost:[PORT]`
-
-## Running Tests
+### Step 2 — Install dependencies
 
 ```bash
-[your test command — e.g.: pytest tests/ -v]
+npm install
 ```
 
-## Quick Demo (Optional)
+This installs: React 18, Vite 4, Recharts 2.8, and their dependencies (~150MB in node_modules).
 
-If you have a demo script or sample data to showcase the project quickly:
+### Step 3 — Start the development server
 
 ```bash
-[e.g.: python demo/seed_demo_data.py]
-[e.g.: open http://localhost:8000/demo]
+npm run dev
 ```
+
+### Step 4 — Open in your browser
+
+```
+http://localhost:5173
+```
+
+The application loads immediately with simulated data — no configuration needed.
+
+---
+
+## Available Scripts
+
+| Command | Description |
+|---|---|
+| `npm run dev` | Start development server with hot reload |
+| `npm run build` | Build production bundle to `dist/` |
+| `npm run preview` | Preview production build locally |
+
+---
+
+## Windows-Specific Instructions
+
+If you are on Windows and `npm` is not recognised:
+
+```powershell
+# Option 1 — Use Command Prompt (cmd) instead of PowerShell
+cd "C:\Users\YourName\path\to\bob-ai-hackathon-FutureMind"
+npm run dev
+
+# Option 2 — Fix PowerShell execution policy
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned -Force
+npm run dev
+
+# Option 3 — Call node directly
+& "C:\Program Files\nodejs\node.exe" ".\node_modules\vite\bin\vite.js"
+```
+
+---
+
+## Project Structure After Install
+
+```
+bob-ai-hackathon-FutureMind/
+├── src/              Application source code (React)
+├── docs/             Documentation
+├── demo/             Screenshots and demo artifacts
+├── presentation/     Hackathon slide deck
+├── dist/             Production build output (after npm run build)
+├── node_modules/     Installed packages (auto-generated, not in git)
+├── package.json      Project metadata and scripts
+├── vite.config.js    Vite build configuration
+└── index.html        HTML entry point
+```
+
+---
+
+## Running the Demo
+
+Once the app is running at `http://localhost:5173`:
+
+1. Click **"▶ Start Demo Mode"** in the sidebar (bottom-left)
+2. A floating panel appears with Step 1 of 10
+3. Click **"Next →"** to advance through all 10 demo steps
+4. The app automatically navigates pages and triggers scenarios
+5. Click **"✅ Finish"** or **"✕"** to exit Demo Mode
+
+### Manual Demo Scenarios
+
+On the **Data Simulation** page:
+- **🔴 Demand Spike (+28%)** — Simulates a critical demand surge
+- **☀️ Solar Underperformance (−60%)** — Simulates solar fleet degradation
+- **💨 Wind Underperformance (−45%)** — Simulates low wind event
+- **🔒 Grid Constraint** — Toggles transmission constraint
+- **✅ Reset All** — Returns to normal operating conditions
+
+---
+
+## Building for Production
+
+```bash
+npm run build
+```
+
+Output is in `dist/` — a static site that can be deployed to:
+- **Vercel:** Connect GitHub repo → auto-deploys
+- **GitHub Pages:** `npx gh-pages -d dist`
+- **Netlify:** Drag and drop `dist/` folder
+- **Any static web server:** Copy `dist/` contents
+
+---
 
 ## Troubleshooting
 
 | Issue | Solution |
 |---|---|
-| [e.g., `ModuleNotFoundError`] | [e.g., Run `pip install -r requirements.txt` again] |
-| [e.g., Database connection refused] | [e.g., Ensure PostgreSQL is running: `docker compose up db`] |
-| [e.g., watsonx.ai 401 error] | [e.g., Check `WATSONX_API_KEY` in your `.env` file] |
+| `npm: command not found` | Install Node.js from https://nodejs.org |
+| Port 5173 already in use | Vite will automatically try 5174, 5175, etc. |
+| White screen on load | Check browser console (F12) for errors |
+| Charts not rendering | Ensure `node_modules` is installed (`npm install`) |
+| LF/CRLF warnings in git | Normal on Windows — not an error |
+
+---
+
+## No Configuration Required
+
+GridWise AI has no `.env` file, no API credentials, and no database connections.
+All data is generated programmatically using a seeded random number generator.
+The application is fully self-contained and runs offline.

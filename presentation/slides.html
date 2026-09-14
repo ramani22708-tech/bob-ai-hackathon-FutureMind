@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>GridWise AI — IBM BoB AI Innovation Hackathon 2026</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"Segoe UI",Arial,sans-serif;background:#0a0f1e;color:#f0f6ff;overflow:hidden}
+.deck{width:100vw;height:100vh;position:relative}
+.slide{position:absolute;top:0;left:0;width:100%;height:100%;display:none;flex-direction:column;padding:48px 60px;background:#0a0f1e}
+.slide.active{display:flex}
+/* Colors */
+:root{
+  --blue:#2196f3;--green:#00e676;--amber:#ffc107;--red:#f44336;--purple:#9c27b0;
+  --navy:#0a0f1e;--card:#111827;--border:#1e2d3d;--muted:#57606a;--sub:#8ba3bc;
+  --ibm:#1F70C1;
+}
+/* IBM BoB badge */
+.ibm-bob{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.ibm-pill{background:var(--ibm);border-radius:5px;padding:3px 10px;font-weight:900;font-size:14px;letter-spacing:2px;color:#fff}
+.bob-text{font-size:13px;font-weight:700;color:#fff;letter-spacing:0.5px}
+/* Slide counter */
+.counter{position:fixed;bottom:20px;right:30px;font-size:12px;color:var(--muted);z-index:100}
+/* Nav buttons */
+.nav{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);display:flex;gap:10px;z-index:100}
+.nav button{background:var(--card);border:1px solid var(--border);color:#fff;padding:8px 20px;border-radius:6px;cursor:pointer;font-size:13px;font-weight:600}
+.nav button:hover{background:#1a2234;border-color:var(--blue)}
+.nav button.primary{background:var(--blue);border-color:var(--blue)}
+/* Slide elements */
+.tag{display:inline-block;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px}
+.tag-blue{background:rgba(33,150,243,0.15);color:var(--blue);border:1px solid rgba(33,150,243,0.3)}
+.tag-green{background:rgba(0,230,118,0.1);color:var(--green);border:1px solid rgba(0,230,118,0.25)}
+.tag-amber{background:rgba(255,193,7,0.12);color:var(--amber);border:1px solid rgba(255,193,7,0.3)}
+.tag-red{background:rgba(244,67,54,0.12);color:var(--red);border:1px solid rgba(244,67,54,0.3)}
+.tag-purple{background:rgba(156,39,176,0.12);color:#ce93d8;border:1px solid rgba(156,39,176,0.3)}
+h1{font-size:42px;font-weight:900;line-height:1.1;letter-spacing:-1px}
+h2{font-size:28px;font-weight:800;line-height:1.2;margin-bottom:6px}
+h3{font-size:18px;font-weight:700;margin-bottom:4px}
+p{font-size:14px;line-height:1.7;color:var(--sub)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px 20px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.grid-4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px}
+.kpi{text-align:center;padding:16px 12px}
+.kpi-val{font-size:28px;font-weight:900;line-height:1}
+.kpi-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-top:4px}
+.divider{border:none;border-top:1px solid var(--border);margin:16px 0}
+.bullet{display:flex;gap:10px;margin-bottom:8px;font-size:13px;color:var(--sub);line-height:1.5}
+.dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:6px}
+.slide-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:28px}
+.slide-num{font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+/* Progress bar */
+.progress{position:fixed;top:0;left:0;height:3px;background:var(--blue);transition:width 0.3s;z-index:200}
+/* Accent line */
+.accent-line{width:48px;height:4px;border-radius:2px;margin:10px 0 16px}
+/* Code block */
+code{background:#0d1529;border:1px solid var(--border);padding:2px 7px;border-radius:4px;font-family:monospace;font-size:12px;color:#79c0ff}
+.code-block{background:#0d1529;border:1px solid var(--border);border-radius:8px;padding:14px 16px;font-family:monospace;font-size:12px;color:#79c0ff;line-height:1.8;margin:8px 0}
+/* Table */
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{background:#0d1529;padding:8px 10px;text-align:left;color:var(--sub);font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:0.4px;border-bottom:1px solid var(--border)}
+td{padding:8px 10px;border-bottom:1px solid #0d1529;color:var(--sub)}
+td:first-child{color:var(--text-primary);font-weight:600;color:#e6edf3}
+/* Architecture boxes */
+.arch-box{border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:11px;color:var(--sub);text-align:center}
+.arch-arrow{display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:18px}
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<div class="deck">
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- SLIDE 1 — TITLE -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="slide active" id="s1">
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center">
+    <div class="ibm-bob" style="margin-bottom:20px">
+      <div class="ibm-pill">IBM</div>
+      <div>
+        <div class="bob-text">BoB AI Innovation Hackathon 2026</div>
+        <div style="font-size:9px;color:var(--muted);letter-spacing:0.5px">TEAM FUTUREMIND</div>
+      </div>
+    </div>
+    <div style="margin-bottom:12px">
+      <span class="tag tag-amber">Problem U2</span>
+      <span style="margin-left:8px" class="tag tag-blue">Utilities · Energy</span>
+    </div>
+    <div style="font-size:60px;font-weight:900;line-height:1;letter-spacing:-2px;margin-bottom:12px">
+      ⚡ GridWise AI
+    </div>
+    <div style="font-size:22px;font-weight:300;color:var(--sub);margin-bottom:28px">
+      Smarter Energy. Stronger Grid. Greener Future.
+    </div>
+    <hr class="divider"/>
+    <div style="display:flex;gap:32px;margin-top:8px">
+      <div><div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px">Problem</div><div style="font-size:13px;font-weight:600;color:#e6edf3;margin-top:2px">Grid Load Optimisation &amp; Renewable Energy Performance Advisor</div></div>
+      <div><div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px">Team</div><div style="font-size:13px;font-weight:600;color:#e6edf3;margin-top:2px">FutureMind</div></div>
+      <div><div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px">Tech</div><div style="font-size:13px;font-weight:600;color:#e6edf3;margin-top:2px">React · Vite · Recharts · Rule-Based AI</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- SLIDE 2 — PROBLEM -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="slide" id="s2">
+  <div class="slide-header">
+    <div>
+      <div class="slide-num">Slide 02 — The Problem</div>
+      <h2>Why Grid Operators Need AI Now</h2>
+      <div class="accent-line" style="background:var(--red)"></div>
+    </div>
+    <div class="ibm-bob"><div class="ibm-pill" style="font-size:11px">IBM</div><div class="bob-text" style="font-size:11px">BoB</div></div>
+  </div>
+  <div class="grid-2" style="flex:1;gap:20px">
+    <div>
+      <div class="card" style="margin-bottom:12px;border-color:rgba(244,67,54,0.3)">
+        <div style="font-size:13px;font-weight:700;color:var(--red);margin-bottom:8px">🔴 The Challenge</div>
+        <div class="bullet"><div class="dot" style="background:var(--red)"></div><div>Renewable energy (solar &amp; wind) is weather-dependent and unpredictable — creating supply-demand imbalances</div></div>
+        <div class="bullet"><div class="dot" style="background:var(--red)"></div><div>Demand spikes can exceed available generation, risking blackouts and emergency interventions</div></div>
+        <div class="bullet"><div class="dot" style="background:var(--red)"></div><div>Renewable asset underperformance goes undetected for hours — wasting clean energy and revenue</div></div>
+        <div class="bullet"><div class="dot" style="background:var(--red)"></div><div>Curtailment wastes 50–100 TWh of renewable energy globally every year</div></div>
+        <div class="bullet"><div class="dot" style="background:var(--red)"></div><div>Operators work with fragmented tools — forecasting, monitoring, and planning in separate silos</div></div>
+      </div>
+      <div class="card" style="border-color:rgba(255,193,7,0.3)">
+        <div style="font-size:13px;font-weight:700;color:var(--amber);margin-bottom:8px">🟡 Who Is Affected</div>
+        <div class="bullet"><div class="dot" style="background:var(--amber)"></div><div><strong style="color:#e6edf3">Grid Operators:</strong> Must react to imbalances with insufficient lead time</div></div>
+        <div class="bullet"><div class="dot" style="background:var(--amber)"></div><div><strong style="color:#e6edf3">Asset Managers:</strong> Cannot quickly detect and diagnose underperformance</div></div>
+        <div class="bullet"><div class="dot" style="background:var(--amber)"></div><div><strong style="color:#e6edf3">Society:</strong> Higher carbon intensity from unnecessary conventional generation</div></div>
+      </div>
+    </div>
+    <div>
+      <div class="grid-2" style="margin-bottom:12px">
+        <div class="card kpi"><div class="kpi-val" style="color:var(--red)">50–100</div><div class="kpi-lbl">TWh Curtailed/Year Globally</div></div>
+        <div class="card kpi"><div class="kpi-val" style="color:var(--amber)">40%</div><div class="kpi-lbl">Forecast Error Reduction Possible with AI</div></div>
+        <div class="card kpi"><div class="kpi-val" style="color:var(--red)">$M</div><div class="kpi-lbl">Cost per Demand Spike Event</div></div>
+        <div class="card kpi"><div class="kpi-val" style="color:var(--amber)">70%</div><div class="kpi-lbl">Target Renewable Share by 2035</div></div>
+      </div>
+      <div class="card">
+        <div style="font-size:13px;font-weight:700;color:var(--sub);margin-bottom:8px">5 Core Problem Dimensions (U2)</div>
+        <table>
+          <tr><td>1. Demand spike forecasting</td></tr>
+          <tr><td>2. Load-balancing recommendations</td></tr>
+          <tr><td>3. Renewable performance anomaly detection</td></tr>
+          <tr><td>4. Root-cause analysis of underperformance</td></tr>
+          <tr><td>5. Integrated operator optimisation brief</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- SLIDE 3 — SOLUTION -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="slide" id="s3">
+  <div class="slide-header">
+    <div>
+      <div class="slide-num">Slide 03 — Our Solution</div>
+      <h2>GridWise AI — What We Built</h2>
+      <div class="accent-line" style="background:var(--green)"></div>
+    </div>
+    <div class="ibm-bob"><div class="ibm-pill" style="font-size:11px">IBM</div><div class="bob-text" style="font-size:11px">BoB</div></div>
+  </div>
+  <div style="margin-bottom:14px">
+    <p style="font-size:15px;color:#e6edf3;line-height:1.6">A complete, interactive, AI-powered web platform for electricity-grid decision support — addressing all 5 dimensions of Problem U2.</p>
+  </div>
+  <div class="grid-3" style="flex:1">
+    <div class="card" style="border-color:rgba(33,150,243,0.3)">
+      <div style="font-size:18px;margin-bottom:6px">📊</div>
+      <h3 style="color:var(--blue)">Demand Forecasting</h3>
+      <p style="font-size:12px">Weighted Moving Average with hour-of-day, day-of-week, and temperature factors. Confidence intervals ±4% → ±13% over 24h. Automatic spike detection alerts.</p>
+    </div>
+    <div class="card" style="border-color:rgba(0,230,118,0.25)">
+      <div style="font-size:18px;margin-bottom:6px">☀️💨</div>
+      <h3 style="color:var(--green)">Renewable Monitoring</h3>
+      <p style="font-size:12px">6 asset fleet (3 solar, 3 wind). Z-score and threshold anomaly detection. Automated root-cause analysis with ranked probable causes and recommended actions.</p>
+    </div>
+    <div class="card" style="border-color:rgba(255,193,7,0.3)">
+      <div style="font-size:18px;margin-bottom:6px">⚖️</div>
+      <h3 style="color:var(--amber)">Grid Balance</h3>
+      <p style="font-size:12px">Real-time surplus/deficit gauge. Reserve margin monitoring (target ≥8%). Generation mix donut chart. Risk period timeline with formula display.</p>
+    </div>
+    <div class="card" style="border-color:rgba(156,39,176,0.3)">
+      <div style="font-size:18px;margin-bottom:6px">🤖</div>
+      <h3 style="color:#ce93d8">AI Insights</h3>
+      <p style="font-size:12px">Rule-based chatbot answering 20+ question patterns. Demand narrative, anomaly explanation, load-balancing recommendations — all data-driven and transparent.</p>
+    </div>
+    <div class="card" style="border-color:rgba(244,67,54,0.25)">
+      <div style="font-size:18px;margin-bottom:6px">✂️</div>
+      <h3 style="color:var(--red)">Curtailment Optimisation</h3>
+      <p style="font-size:12px">Formula: max(0, Available − Utilised). AI minimisation plan with 4 strategies: flex load (55%), storage (25%), interconnector (15%), conventional reduction.</p>
+    </div>
+    <div class="card" style="border-color:rgba(33,150,243,0.3)">
+      <div style="font-size:18px;margin-bottom:6px">📋</div>
+      <h3 style="color:var(--blue)">Operator Brief</h3>
+      <p style="font-size:12px">One-click 9-section structured report (A–I). Executive summary, demand forecast, renewable performance, grid balance, root causes, recommendations, curtailment plan, outlook. Printable PDF.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- SLIDE 4 — ARCHITECTURE -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="slide" id="s4">
+  <div class="slide-header">
+    <div>
+      <div class="slide-num">Slide 04 — Architecture</div>
+      <h2>System Architecture</h2>
+      <div class="accent-line" style="background:var(--blue)"></div>
+    </div>
+    <div class="ibm-bob"><div class="ibm-pill" style="font-size:11px">IBM</div><div class="bob-text" style="font-size:11px">BoB</div></div>
+  </div>
+  <div class="grid-2" style="flex:1;gap:20px">
+    <div>
+      <div style="display:flex;flex-direction:column;gap:8px;height:100%">
+        <div class="arch-box" style="border-color:rgba(33,150,243,0.4);background:rgba(33,150,243,0.05)">
+          <div style="font-size:11px;font-weight:700;color:var(--blue);margin-bottom:4px">📊 DATA LAYER</div>
+          <div style="font-size:10px;color:var(--sub)">simulationData.js · assets.js · alerts.js<br/>48h × 30-min time-series · Seeded RNG (42) · 6 asset definitions</div>
+        </div>
+        <div class="arch-arrow">↓</div>
+        <div class="arch-box" style="border-color:rgba(0,230,118,0.3);background:rgba(0,230,118,0.04)">
+          <div style="font-size:11px;font-weight:700;color:var(--green);margin-bottom:4px">🔢 COMPUTATION LAYER</div>
+          <div style="font-size:10px;color:var(--sub)">calculations.js · forecasting.js · anomalyDetection.js<br/>WMA Forecast · Z-score Detection · Grid Balance Formulas</div>
+        </div>
+        <div class="arch-arrow">↓</div>
+        <div class="arch-box" style="border-color:rgba(156,39,176,0.35);background:rgba(156,39,176,0.05)">
+          <div style="font-size:11px;font-weight:700;color:#ce93d8;margin-bottom:4px">🤖 AI LAYER (Rule-Based NLG)</div>
+          <div style="font-size:10px;color:var(--sub)">aiInsights.js<br/>Demand Narrative · Anomaly Explanation · RCA · Recommendations · Brief Generator · Chatbot</div>
+        </div>
+        <div class="arch-arrow">↓</div>
+        <div class="arch-box" style="border-color:rgba(255,193,7,0.3);background:rgba(255,193,7,0.04)">
+          <div style="font-size:11px;font-weight:700;color:var(--amber);margin-bottom:4px">⚙️ STATE LAYER</div>
+          <div style="font-size:10px;color:var(--sub)">SimulationContext.jsx (React Context + useMemo)<br/>20+ computed values · Reactive scenario overrides</div>
+        </div>
+        <div class="arch-arrow">↓</div>
+        <div class="arch-box" style="border-color:rgba(33,150,243,0.4);background:rgba(33,150,243,0.05)">
+          <div style="font-size:11px;font-weight:700;color:var(--blue);margin-bottom:4px">🖥️ UI LAYER</div>
+          <div style="font-size:10px;color:var(--sub)">9 Page Components · 4 Chart Components · React 18 + Recharts + Vite</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:12px">
+        <div style="font-size:12px;font-weight:700;color:var(--sub);margin-bottom:10px">⚡ Data Flow — Scenario Trigger</div>
+        <div class="code-block">User: "Demand Spike" button
+  ↓
+setDemandLevel('spike') — demandMultiplier: 1.28
+  ↓
+generateHistoricalData(overrides) — 96 points
+  ↓
+computeKPIs() · generateDemandForecast()
+runAllDetectors() · generateDynamicAlerts()
+computeGridBalance() · computeCurtailmentSeries()
+generateLoadBalancingRecommendations()
+generateOperatorBrief()
+  ↓
+All 9 pages re-render simultaneously</div>
+      </div>
+      <div class="card">
+        <div style="font-size:12px;font-weight:700;color:var(--sub);margin-bottom:8px">🛠️ Tech Stack</div>
+        <table>
+          <tr><td>Frontend</td><td style="color:var(--blue)">React 18 + Vite 4</td></tr>
+          <tr><td>Charts</td><td style="color:var(--blue)">Recharts 2.8</td></tr>
+          <tr><td>AI</td><td style="color:#ce93d8">Rule-Based NLG</td></tr>
+          <tr><td>Data</td><td style="color:var(--green)">Simulated (Seeded RNG)</td></tr>
+          <tr><td>IBM Tech</td><td style="color:var(--ibm)">IBM BoB Platform</td></tr>
+          <tr><td>Deployment</td><td style="color:var(--sub)">Static SPA — No backend</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- SLIDE 5 — AI MODULES -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="slide" id="s5">
+  <div class="slide-header">
+    <div>
+      <div class="slide-num">Slide 05 — AI Capabilities</div>
+      <h2>Transparent Rule-Based AI</h2>
+      <div class="accent-line" style="background:var(--purple)"></div>
+    </div>
+    <div class="ibm-bob"><div class="ibm-pill" style="font-size:11px">IBM</div><div class="bob-text" style="font-size:11px">BoB</div></div>
+  </div>
+  <div style="margin-bottom:12px">
+    <span class="tag tag-purple">No Black-Box Models</span>
+    <span style="margin-left:8px" class="tag tag-green">Fully Explainable</span>
+    <span style="margin-left:8px" class="tag tag-blue">No API Keys Required</span>
+  </div>
+  <div class="grid-2" style="flex:1;gap:16px">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <h3 style="color:var(--blue)">📈 Demand Forecasting</h3>
+          <code>forecasting.js</code>
+        </div>
+        <div class="bullet"><div class="dot" style="background:var(--blue)"></div><div>Weighted Moving Average of historical periods at same hour</div></div>
+        <div class="bullet"><div class="dot" style="background:var(--blue)"></div><div>Hour-of-day factor table (24 values) × Day-of-week factor (7 values)</div></div>
+        <div class="bullet"><div class="dot" style="background:var(--blue)"></div><div>Temperature adjustment: +3% per -10°C below 18°C heating baseline</div></div>
+        <div class="bullet"><div class="dot" style="background:var(--blue)"></div><div>Confidence intervals widen ±4% → ±13% over forecast horizon</div></div>
+      </div>
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <h3 style="color:var(--red)">🔍 Anomaly Detection</h3>
+          <code>anomalyDetection.js</code>
+        </div>
+        <div class="bullet"><div class="dot" style="background:var(--red)"></div><div><strong style="color:#e6edf3">Z-score method:</strong> Flag if |z| &gt; 2.5 — statistical outlier detection</div></div>
+        <div class="bullet"><div class="dot" style="background:var(--red)"></div><div><strong style="color:#e6edf3">Threshold method:</strong> Flag if actual &lt; 70% of expected output</div></div>
+        <div class="bullet"><div class="dot" style="background:var(--red)"></div><div>Applied to solar, wind, and demand independently</div></div>
+        <div class="bullet"><div class="dot" style="background:var(--red)"></div><div>Output: severity, deviation%, Z-score, type, probable causes</div></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <h3 style="color:#ce93d8">🧠 Root Cause Analysis</h3>
+          <code>aiInsights.js</code>
+        </div>
+        <div class="bullet"><div class="dot" style="background:#ce93d8"></div><div>7 solar cause library ranked by deviation magnitude + probability estimate</div></div>
+        <div class="bullet"><div class="dot" style="background:#ce93d8"></div><div>7 wind cause library with recommended verification steps</div></div>
+        <div class="bullet"><div class="dot" style="background:#ce93d8"></div><div>Output: natural-language explanation + ranked probable causes + actions</div></div>
+      </div>
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <h3 style="color:var(--green)">✂️ Curtailment Analysis</h3>
+          <code>calculations.js</code>
+        </div>
+        <div class="bullet"><div class="dot" style="background:var(--green)"></div><div><strong style="color:#e6edf3">Formula:</strong> Curtailment = max(0, Available Renewable − Utilised)</div></div>
+        <div class="bullet"><div class="dot" style="background:var(--green)"></div><div>Recovery modelling: 55% flex load + 25% storage + 15% interconnector</div></div>
+        <div class="bullet"><div class="dot" style="background:var(--green)"></div><div>High-curtailment period identification and asset breakdown</div></div>
+      </div>
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <h3 style="color:var(--amber)">💬 AI Chatbot</h3>
+          <code>answerQuestion()</code>
+        </div>
+        <div class="bullet"><div class="dot" style="background:var(--amber)"></div><div>10 keyword patterns matching demand, solar, wind, curtailment, anomalies, recommendations, forecast, balance, carbon, reserve margin</div></div>
+        <div class="bullet"><div class="dot" style="background:var(--amber)"></div><div>Every response interpolates live KPI values — no static text</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- SLIDE 6 — DEMO WALKTHROUGH -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="slide" id="s6">
+  <div class="slide-header">
+    <div>
+      <div class="slide-num">Slide 06 — Live Demo</div>
+      <h2>10-Step Demo Walkthrough</h2>
+      <div class="accent-line" style="background:var(--green)"></div>
+    </div>
+    <div class="ibm-bob"><div class="ibm-pill" style="font-size:11px">IBM</div><div class="bob-text" style="font-size:11px">BoB</div></div>
+  </div>
+  <div class="grid-2" style="flex:1;gap:16px">
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div class="card" style="padding:12px 14px;border-color:rgba(0,230,118,0.2)">
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <div style="background:var(--green);color:#000;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;flex-shrink:0">1</div>
+          <div><div style="font-size:12px;font-weight:700;color:#e6edf3">Overview Dashboard</div><div style="font-size:11px;color:var(--sub)">Show 9 KPIs, demand chart, active alerts, AI recommendations</div></div>
+        </div>
+      </div>
+      <div class="card" style="padding:12px 14px">
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <div style="background:var(--blue);color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;flex-shrink:0">2</div>
+          <div><div style="font-size:12px;font-weight:700;color:#e6edf3">Demand Forecast</div><div style="font-size:11px;color:var(--sub)">AI forecast chart with confidence bands, peak detection, MAE/RMSE</div></div>
+        </div>
+      </div>
+      <div class="card" style="padding:12px 14px">
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <div style="background:var(--blue);color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;flex-shrink:0">3</div>
+          <div><div style="font-size:12px;font-weight:700;color:#e6edf3">Renewable Assets</div><div style="font-size:11px;color:var(--sub)">6 asset cards with performance ratios and health status</div></div>
+        </div>
+      </div>
+      <div class="card" style="padding:12px 14px;border-color:rgba(244,67,54,0.3)">
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <div style="background:var(--red);color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;flex-shrink:0">4</div>
+          <div><div style="font-size:12px;font-weight:700;color:#e6edf3">Trigger Demand Spike ⚡</div><div style="font-size:11px;color:var(--sub)">+28% demand multiplier → all KPIs update, critical alert appears</div></div>
+        </div>
+      </div>
+      <div class="card" style="padding:12px 14px">
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <div style="background:var(--amber);color:#000;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;flex-shrink:0">5</div>
+          <div><div style="font-size:12px;font-weight:700;color:#e6edf3">Grid Balance</div><div style="font-size:11px;color:var(--sub)">Reserve margin below 8%, risk periods highlighted, generation mix</div></div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div class="card" style="padding:12px 14px;border-color:rgba(255,193,7,0.3)">
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <div style="background:var(--amber);color:#000;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;flex-shrink:0">6</div>
+          <div><div style="font-size:12px;font-weight:700;color:#e6edf3">Trigger Solar Underperformance ☀️</div><div style="font-size:11px;color:var(--sub)">−60% solar fleet → anomaly detection activates</div></div>
+        </div>
+      </div>
+      <div class="card" style="padding:12px 14px;border-color:rgba(156,39,176,0.3)">
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <div style="background:var(--purple);color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;flex-shrink:0">7</div>
+          <div><div style="font-size:12px;font-weight:700;color:#e6edf3">Anomaly + Root Cause Analysis</div><div style="font-size:11px;color:var(--sub)">Click Solar Farm Alpha → AI RCA with ranked probable causes</div></div>
+        </div>
+      </div>
+      <div class="card" style="padding:12px 14px">
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <div style="background:var(--red);color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;flex-shrink:0">8</div>
+          <div><div style="font-size:12px;font-weight:700;color:#e6edf3">Curtailment Optimisation</div><div style="font-size:11px;color:var(--sub)">AI plan: 80% recoverable via flex load + storage + interconnector</div></div>
+        </div>
+      </div>
+      <div class="card" style="padding:12px 14px;border-color:rgba(156,39,176,0.3)">
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <div style="background:var(--purple);color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;flex-shrink:0">9</div>
+          <div><div style="font-size:12px;font-weight:700;color:#e6edf3">AI Insights Chat</div><div style="font-size:11px;color:var(--sub)">Ask "What actions do you recommend?" → live data-driven response</div></div>
+        </div>
+      </div>
+      <div class="card" style="padding:12px 14px;border-color:rgba(33,150,243,0.3)">
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <div style="background:var(--blue);color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;flex-shrink:0">10</div>
+          <div><div style="font-size:12px;font-weight:700;color:#e6edf3">Generate Operator Brief</div><div style="font-size:11px;color:var(--sub)">One-click 9-section structured report → Print / Copy to clipboard</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- SLIDE 7 — RESULTS & IMPACT -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="slide" id="s7">
+  <div class="slide-header">
+    <div>
+      <div class="slide-num">Slide 07 — Results &amp; Impact</div>
+      <h2>What GridWise AI Delivers</h2>
+      <div class="accent-line" style="background:var(--green)"></div>
+    </div>
+    <div class="ibm-bob"><div class="ibm-pill" style="font-size:11px">IBM</div><div class="bob-text" style="font-size:11px">BoB</div></div>
+  </div>
+  <div class="grid-4" style="margin-bottom:16px">
+    <div class="card kpi"><div class="kpi-val" style="color:var(--green)">9</div><div class="kpi-lbl">Fully Functional Pages</div></div>
+    <div class="card kpi"><div class="kpi-val" style="color:var(--blue)">39</div><div class="kpi-lbl">Source Files</div></div>
+    <div class="card kpi"><div class="kpi-val" style="color:var(--amber)">96</div><div class="kpi-lbl">Simulation Data Points</div></div>
+    <div class="card kpi"><div class="kpi-val" style="color:var(--purple)">20+</div><div class="kpi-lbl">AI Response Patterns</div></div>
+  </div>
+  <div class="grid-2" style="flex:1;gap:16px">
+    <div>
+      <div class="card" style="margin-bottom:12px">
+        <div style="font-size:13px;font-weight:700;color:var(--green);margin-bottom:10px">✅ Implemented Features</div>
+        <div class="bullet"><div class="dot" style="background:var(--green)"></div><div>Demand forecasting with WMA + 3 adjustment factors + confidence intervals</div></div>
+        <div class="bullet"><div class="dot" style="background:var(--green)"></div><div>Statistical anomaly detection (Z-score + threshold) for 6 assets</div></div>
+        <div class="bullet"><div class="dot" style="background:var(--green)"></div><div>Automated root-cause analysis with 14-item cause library</div></div>
+        <div class="bullet"><div class="dot" style="background:var(--green)"></div><div>Real-time grid balance with 7 verified formulas</div></div>
+        <div class="bullet"><div class="dot" style="background:var(--green)"></div><div>Curtailment analysis + AI minimisation plan with 4 strategies</div></div>
+        <div class="bullet"><div class="dot" style="background:var(--green)"></div><div>Rule-based chatbot with 10 data-driven response patterns</div></div>
+        <div class="bullet"><div class="dot" style="background:var(--green)"></div><div>9-section printable Operator Brief generator</div></div>
+        <div class="bullet"><div class="dot" style="background:var(--green)"></div><div>5 interactive simulation scenarios + CSV data export</div></div>
+        <div class="bullet"><div class="dot" style="background:var(--green)"></div><div>10-step guided Demo Mode for presentations</div></div>
+      </div>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:12px">
+        <div style="font-size:13px;font-weight:700;color:var(--blue);margin-bottom:10px">🎯 Expected Benefits</div>
+        <table>
+          <tr><th>Benefit</th><th>Mechanism</th></tr>
+          <tr><td>Earlier spike awareness</td><td>6–24h ahead forecast</td></tr>
+          <tr><td>Faster fault detection</td><td>Statistical anomaly detection</td></tr>
+          <tr><td>Reduced curtailment</td><td>80% recovery plan</td></tr>
+          <tr><td>Better decisions</td><td>Integrated 9-section brief</td></tr>
+          <tr><td>Transparent AI</td><td>Traceable rule-based logic</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <div style="font-size:13px;font-weight:700;color:var(--amber);margin-bottom:8px">🔮 Future Improvements</div>
+        <div class="bullet"><div class="dot" style="background:var(--amber)"></div><div>Integrate IBM watsonx.ai for ML-powered forecasting</div></div>
+        <div class="bullet"><div class="dot" style="background:var(--amber)"></div><div>Connect real SCADA/sensor data feeds</div></div>
+        <div class="bullet"><div class="dot" style="background:var(--amber)"></div><div>Mobile app for field engineers</div></div>
+        <div class="bullet"><div class="dot" style="background:var(--amber)"></div><div>Real-time weather API integration</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- SLIDE 8 — CLOSING -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="slide" id="s8">
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;text-align:center;align-items:center">
+    <div class="ibm-bob" style="justify-content:center;margin-bottom:24px">
+      <div class="ibm-pill" style="font-size:16px;padding:4px 12px">IBM</div>
+      <div>
+        <div class="bob-text" style="font-size:16px">BoB AI Innovation Hackathon 2026</div>
+        <div style="font-size:10px;color:var(--muted);letter-spacing:0.5px">TEAM FUTUREMIND</div>
+      </div>
+    </div>
+    <div style="font-size:52px;font-weight:900;letter-spacing:-2px;margin-bottom:10px">⚡ GridWise AI</div>
+    <div style="font-size:20px;color:var(--sub);margin-bottom:28px">Smarter Energy. Stronger Grid. Greener Future.</div>
+    <div style="display:flex;gap:16px;justify-content:center;margin-bottom:32px">
+      <span class="tag tag-green">9 Pages</span>
+      <span class="tag tag-blue">Rule-Based AI</span>
+      <span class="tag tag-amber">6 Renewable Assets</span>
+      <span class="tag tag-red">Anomaly Detection</span>
+      <span class="tag tag-purple">Operator Brief</span>
+    </div>
+    <hr class="divider" style="width:400px;margin:0 auto 28px"/>
+    <div style="display:flex;gap:40px;justify-content:center">
+      <div>
+        <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px">GitHub</div>
+        <div style="font-size:12px;color:var(--blue);margin-top:2px">github.com/ramani22708-tech/bob-ai-hackathon-FutureMind</div>
+      </div>
+      <div>
+        <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px">Problem</div>
+        <div style="font-size:12px;color:#e6edf3;margin-top:2px">U2 — Grid Load Optimisation &amp; Renewable Energy Performance Advisor</div>
+      </div>
+    </div>
+    <div style="margin-top:40px;font-size:16px;color:var(--sub)">Thank you! Questions welcome. 🙏</div>
+  </div>
+</div>
+
+</div><!-- end deck -->
+
+<!-- Controls -->
+<div class="nav">
+  <button onclick="prevSlide()">← Previous</button>
+  <button onclick="goSlide(1)" style="font-size:11px;padding:8px 12px">1</button>
+  <button onclick="goSlide(2)" style="font-size:11px;padding:8px 12px">2</button>
+  <button onclick="goSlide(3)" style="font-size:11px;padding:8px 12px">3</button>
+  <button onclick="goSlide(4)" style="font-size:11px;padding:8px 12px">4</button>
+  <button onclick="goSlide(5)" style="font-size:11px;padding:8px 12px">5</button>
+  <button onclick="goSlide(6)" style="font-size:11px;padding:8px 12px">6</button>
+  <button onclick="goSlide(7)" style="font-size:11px;padding:8px 12px">7</button>
+  <button onclick="goSlide(8)" style="font-size:11px;padding:8px 12px">8</button>
+  <button class="primary" onclick="nextSlide()">Next →</button>
+</div>
+<div class="counter" id="counter">1 / 8</div>
+
+<script>
+let current = 1;
+const total = 8;
+function show(n){
+  document.querySelectorAll('.slide').forEach(s=>s.classList.remove('active'));
+  document.getElementById('s'+n).classList.add('active');
+  document.getElementById('counter').textContent = n+' / '+total;
+  document.getElementById('progress').style.width = (n/total*100)+'%';
+  current = n;
+}
+function nextSlide(){ if(current<total) show(current+1); }
+function prevSlide(){ if(current>1) show(current-1); }
+function goSlide(n){ show(n); }
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown') nextSlide();
+  if(e.key==='ArrowLeft'||e.key==='PageUp') prevSlide();
+});
+show(1);
+</script>
+</body>
+</html>
