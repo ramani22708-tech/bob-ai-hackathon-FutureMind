@@ -1,4 +1,4 @@
-https://your-live-demo-url-here.com
+https://ramani22708-tech.github.io/bob-ai-hackathon-FutureMind/
 
 Replace the URL above with a link to your live/deployed demo.
 
